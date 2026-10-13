@@ -25,10 +25,17 @@ const productSchema = new mongoose.Schema({
     },
   },
   price: {
-    type: String,
-    required: true,
-    enum: ["INR", "USD"],
-    default: "INR",
+    amount: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    currency: {
+      type: String,
+      required: true,
+      enum: ["INR", "USD"],
+      default: "INR",
+    },
   },
   sizes: [
     {

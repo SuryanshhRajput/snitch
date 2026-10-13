@@ -1,7 +1,7 @@
 import { readAccessToken } from "../utils/auth.utils.js";
 
-export const authenticate = async (req, res) => {
-  const accessToken = req.headers.Authorization?.split(" ")[1];
+export const authenticate = async (req, res, next) => {
+  const accessToken = req.headers.authorization?.split(" ")[1];
 
   if (!accessToken) {
     return res.status(400).json({
@@ -10,7 +10,7 @@ export const authenticate = async (req, res) => {
   }
 
   try {
-    const decoded = readAccessToken(accessToken);
+    const decoded = await readAccessToken(accessToken);
 
     req.user = decoded;
     next();
