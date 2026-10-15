@@ -1,11 +1,21 @@
 import { Router } from "express";
-import { authenticate } from "../middlewares/auth.middlewares.js";
+import {
+  authenticate,
+  authenticateSeller,
+} from "../middlewares/auth.middlewares.js";
 import multer from "multer";
 import {
   createProduct,
   getAllProduct,
+  listAllProductsToSeller,
+  listProduct,
+  unlistProduct,
 } from "../controllers/product.controller.js";
-import { createProductValidator } from "../validators/product.validator.js";
+import {
+  createProductValidator,
+  listProductValidator,
+  unlistProductValidator,
+} from "../validators/product.validator.js";
 
 const router = Router();
 
@@ -38,5 +48,32 @@ router.post(
 // get all product
 
 router.get("/", authenticate, getAllProduct);
+
+// seeller will see all the products
+
+router.get(
+  "/seller",
+  authenticate,
+  authenticateSeller,
+  listAllProductsToSeller,
+);
+
+//unlist product y its id
+
+router.patch(
+  "/unlist/:id",
+  authenticate,
+  authenticateSeller,
+  unlistProductValidator,
+  unlistProduct,
+);
+
+router.patch(
+  "/list/:id",
+  authenticate,
+  authenticateSeller,
+  listProductValidator,
+  listProduct,
+);
 
 export default router;

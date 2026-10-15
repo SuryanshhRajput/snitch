@@ -69,18 +69,55 @@ export const createProductValidator = [
     .isInt({ min: 0 })
     .withMessage("Stocks must be a integer value"),
 
-    (req, res, next) => {
+  (req, res, next) => {
+    const errors = validationResult(req);
 
-      const errors = validationResult(req)
-
-      if(!errors.isEmpty()){
-        return res.status(400).json({
-          message:"Invalid request",
-          errors: errors.array()
-
-        })
-      }
-      next()
-
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: "Invalid request",
+        errors: errors.array(),
+      });
     }
+    next();
+  },
+];
+
+export const unlistProductValidator = [
+  body("params")
+    .exists()
+    .withMessage("Product id is required")
+    .bail()
+    .isMongoId()
+    .withMessage("Product id must be a valid Mongo Id"),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: "Invalid data",
+        errors: errors.array(),
+      });
+    }
+  },
+];
+
+export const listProductValidator = [
+  body("params")
+    .exists()
+    .withMessage("Product id is required")
+    .bail()
+    .isMongoId()
+    .withMessage("Product id must be a valid Mongo Id"),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: "Invalid data",
+        errors: errors.array(),
+      });
+    }
+  },
 ];

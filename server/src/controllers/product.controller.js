@@ -3,9 +3,6 @@ import { uploadFile } from "../services/storage.services.js";
 import productModel from "../models/product.model.js";
 
 export const createProduct = async (req, res) => {
-  console.log(req.body);
-  console.log(req.files);
-
   const fileUrls = [];
 
   for (let i = 0; i < req.files.length; i++) {
@@ -40,9 +37,60 @@ export const createProduct = async (req, res) => {
 // get all products
 
 export const getAllProduct = async (req, res) => {
-  const products = await productModel.find();
+  const products = await productModel.find({
+    published: true,
+  });
   res.status(200).json({
     message: "All products fetched Successfully",
     products,
+  });
+};
+
+// seller will see all the products
+
+export const listAllProductsToSeller = async (req, res) => {
+  const products = await productModel.find({});
+
+  return res.status(200).json({
+    message: "All products fetched Successfully for seller",
+    data: {
+      products,
+    },
+  });
+};
+
+// unlist product
+
+export const unlistProduct = async (req, res) => {
+  const { id } = req.params;
+
+  const product = await productModel.findById(id);
+
+  if (!product) {
+    return res.status(404).json({ message: "product not  found by id" });
+  }
+  await productModel.findByIdAndUpdate(id, {
+    published: false,
+  });
+
+  return res.status(200).json({
+    message: "Unlisted Successfully",
+  });
+};
+//list product
+export const listProduct = async (req, res) => {
+  const { id } = req.params;
+
+  const product = await productModel.findById(id);
+
+  if (!product) {
+    return res.status(404).json({ message: "product not  found by id" });
+  }
+  await productModel.findByIdAndUpdate(id, {
+    published: true,
+  });
+
+  return res.status(200).json({
+    message: " Product listed Successfully",
   });
 };

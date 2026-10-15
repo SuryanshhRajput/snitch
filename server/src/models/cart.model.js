@@ -7,7 +7,7 @@ const cartSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
       },
-      qunatity: {
+      quantity: {
         type: Number,
         default: 1,
         min: 1,
@@ -23,6 +23,10 @@ const cartSchema = new mongoose.Schema({
     ref: "users",
     required: true,
   },
+  published:{
+    type: Boolean,
+    default: false
+  }
 });
 
 const cartModel = mongoose.model("carts", cartSchema);

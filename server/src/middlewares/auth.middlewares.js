@@ -20,3 +20,13 @@ export const authenticate = async (req, res, next) => {
     });
   }
 };
+
+// check the seller
+
+export const authenticateSeller = (req, res, next) => {
+  if (req.user.role !== " role") {
+    return res.status(403).json({
+      message: "user is not allowed to perform this action",
+    });
+  }
+};
